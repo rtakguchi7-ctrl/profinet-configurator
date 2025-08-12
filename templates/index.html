@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title>PROFINET設定</title></head>
+<body>
+  <h1>PROFINETスレーブ設定</h1>
+  <form method="post">
+    MACアドレス: <input name="mac"><br>
+    Station Name: <input name="station_name"><br>
+    IPアドレス: <input name="ip_address"><br>
+    サブネットマスク: <input name="subnet_mask"><br>
+    ゲートウェイ: <input name="gateway"><br>
+    使用NIC: 
+    <select name="nic">
+      <option value="eth-4">eth-4</option>
+      <option value="eth-5">eth-5</option>
+    </select><br>
+    <input type="submit" value="送信">
+  </form>
+  <p>{{ message }}</p>
+</body>
+</html>
