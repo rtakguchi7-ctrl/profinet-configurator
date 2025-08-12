@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><title>PROFINET設定</title></head>
+<body>
+  <h1>PROFINETスレーブ設定</h1>
+  <form method="post">
+    IPアドレス（NIC）: <input name="ip_address"><br>
+    <button type="submit" name="search">検索</button>
+  </form>
+  <pre>{{ result }}</pre>
+  <hr>
+  <form method="post">
+    MACアドレス: <input name="mac"><br>
+    Station Name: <input name="station_name"><br>
+    IPアドレス: <input name="ip_address"><br>
+    サブネットマスク: <input name="subnet_mask"><br>
+    ゲートウェイ: <input name="gateway"><br>
+    <button type="submit" name="configure">送信</button>
+  </form>
+  <p>{{ message }}</p>
+</body>
+</html>
