@@ -17,7 +17,7 @@ HTML_TEMPLATE = '''
   IP Address: <input type=text name=ip><br>
   <input type=submit value=Configure>
 </form>
-<p>{{ message }}</p>
+<pre>{{ message }}</pre>
 '''
 
 def run_dcp_command(args):
