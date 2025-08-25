@@ -15,9 +15,17 @@ HTML_TEMPLATE = '''
   <input type="submit" name="action" value="SCAN">
 </form>
 
+{% if scanning %}
+  <p><strong>スキャン中...</strong></p>
+{% endif %}
+
+{% if scan_message %}
+  <p><strong>{{ scan_message }}</strong></p>
+{% endif %}
+
 {% if devices %}
   <h3>Detected PROFINET Devices</h3>
-  <table border=1>
+  <table border=1 style="background-color:#eef;">
     <tr><th>MAC Address</th><th>IP Address</th><th>Station Name</th><th>Vendor</th></tr>
     {% for d in devices %}
       <tr><td>{{ d.mac }}</td><td>{{ d.ip }}</td><td>{{ d.name }}</td><td>{{ d.vendor }}</td></tr>
@@ -71,13 +79,18 @@ def parse_identify_output(output):
 def index():
     message = ""
     devices = []
+    scan_message = ""
+    scanning = False
+
     if request.method == 'POST':
         interface = request.form['interface']
         action = request.form['action']
 
         if action == "SCAN":
+            scanning = True
             output = run_dcp_command(["profi-dcp", "identify", "--interface", interface])
             devices = parse_identify_output(output)
+            scan_message = "No PROFINET devices found." if not devices else ""
 
         elif action == "CONFIGURE":
             mac = request.form['mac']
@@ -86,7 +99,7 @@ def index():
             message += run_dcp_command(["profi-dcp", "set-name", "--interface", interface, "--mac", mac, "--name", name])
             message += run_dcp_command(["profi-dcp", "set-ip", "--interface", interface, "--mac", mac, "--ip", ip])
 
-    return render_template_string(HTML_TEMPLATE, message=message, devices=devices)
+    return render_template_string(HTML_TEMPLATE, message=message, devices=devices, scan_message=scan_message, scanning=scanning)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5050)
