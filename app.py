@@ -39,13 +39,8 @@ def index():
         name = request.form['name']
         ip = request.form['ip']
 
-        # Run identify
         message += run_dcp_command(["profi-dcp", "identify", "--interface", interface])
-
-        # Set station name
         message += run_dcp_command(["profi-dcp", "set-name", "--interface", interface, "--mac", mac, "--name", name])
-
-        # Set IP address
         message += run_dcp_command(["profi-dcp", "set-ip", "--interface", interface, "--mac", mac, "--ip", ip])
 
     return render_template_string(HTML_TEMPLATE, message=message)
