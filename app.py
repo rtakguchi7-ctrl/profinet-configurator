@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template_string
-from profi_dcp import DCPManager
+import subprocess
 
 app = Flask(__name__)
 
@@ -20,6 +20,16 @@ HTML_TEMPLATE = '''
 <p>{{ message }}</p>
 '''
 
+def run_dcp_command(args):
+    try:
+        result = subprocess.run(args, capture_output=True, text=True)
+        if result.returncode == 0:
+            return result.stdout
+        else:
+            return f"Error: {result.stderr}"
+    except Exception as e:
+        return f"Exception: {str(e)}"
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     message = ""
@@ -28,14 +38,16 @@ def index():
         mac = request.form['mac']
         name = request.form['name']
         ip = request.form['ip']
-        try:
-            dcp = DCPManager(interface)
-            dcp.identify(mac)
-            dcp.set_station_name(mac, name)
-            dcp.set_ip(mac, ip)
-            message = "Configuration successful."
-        except Exception as e:
-            message = f"Error: {e}"
+
+        # Run identify
+        message += run_dcp_command(["profi-dcp", "identify", "--interface", interface])
+
+        # Set station name
+        message += run_dcp_command(["profi-dcp", "set-name", "--interface", interface, "--mac", mac, "--name", name])
+
+        # Set IP address
+        message += run_dcp_command(["profi-dcp", "set-ip", "--interface", interface, "--mac", mac, "--ip", ip])
+
     return render_template_string(HTML_TEMPLATE, message=message)
 
 if __name__ == '__main__':
