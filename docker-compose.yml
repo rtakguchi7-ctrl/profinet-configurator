@@ -3,7 +3,7 @@ services:
   dcp_web_ui:
     build: .
     ports:
-      - "5000:5000"
+      - "5050:5050"
     restart: unless-stopped
     privileged: true
     network_mode: "host"
