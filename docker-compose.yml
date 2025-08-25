@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   dcp_web_ui:
     build: .
