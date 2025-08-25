@@ -9,8 +9,8 @@ HTML_TEMPLATE = '''
 <h2>PROFINET Device Scanner</h2>
 <form method="post">
   Interface: <select name="interface">
-    <option value="eth-4">eth-4</option>
-    <option value="eth-5">eth-5</option>
+    <option value="eth-x4">eth-x4</option>
+    <option value="eth-x5">eth-x5</option>
   </select>
   <input type="submit" name="action" value="SCAN">
 </form>
@@ -36,8 +36,8 @@ HTML_TEMPLATE = '''
 <h2>Configure Device</h2>
 <form method="post">
   Interface: <select name="interface">
-    <option value="eth-4">eth-4</option>
-    <option value="eth-5">eth-5</option>
+    <option value="eth-x4">eth-x4</option>
+    <option value="eth-x5">eth-x5</option>
   </select><br>
   MAC Address: <input type=text name=mac><br>
   Station Name: <input type=text name=name><br>
