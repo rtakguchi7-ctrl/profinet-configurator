@@ -48,13 +48,17 @@ HTML_TEMPLATE = '''
 '''
 
 def run_dcp_command(args):
+    print(f"[DCP] 実行コマンド: {' '.join(args)}")  # コマンド表示
     try:
         result = subprocess.run(args, capture_output=True, text=True)
+        print(f"[DCP] 標準出力:\n{result.stdout}")  # 成功時の出力
         if result.returncode == 0:
             return result.stdout
         else:
+            print(f"[DCP] エラー出力:\n{result.stderr}")  # エラー時の出力
             return f"Error: {result.stderr}"
     except Exception as e:
+        print(f"[DCP] 例外発生: {str(e)}")
         return f"Exception: {str(e)}"
 
 def parse_identify_output(output):
@@ -85,6 +89,8 @@ def index():
     if request.method == 'POST':
         interface = request.form['interface']
         action = request.form['action']
+        print(f"[UI] 選択されたインターフェース: {interface}")
+        print(f"[UI] 実行アクション: {action}")
 
         if action == "SCAN":
             scanning = True
@@ -96,6 +102,7 @@ def index():
             mac = request.form['mac']
             name = request.form['name']
             ip = request.form['ip']
+            print(f"[CONFIGURE] MAC: {mac}, Station Name: {name}, IP: {ip}")
             message += run_dcp_command(["profi-dcp", "set-name", "--interface", interface, "--mac", mac, "--name", name])
             message += run_dcp_command(["profi-dcp", "set-ip", "--interface", interface, "--mac", mac, "--ip", ip])
 
