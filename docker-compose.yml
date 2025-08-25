@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  dcp_web_ui:
+    build: .
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    privileged: true
+    network_mode: "host"
